@@ -47,4 +47,9 @@ fun BiodataScreen() {
     val datePickerState = rememberDatePickerState()
     var expandedDropdown by remember { mutableStateOf(false) }
     val experienceOptions = stringArrayResource(id = R.array.experience_options)
+    val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
+
+    // Variabel Job untuk mengelola waktu tunggu pop-up agar akurat 5 detik
+    var dialogJob by remember { mutableStateOf<Job?>(null) }
 }
