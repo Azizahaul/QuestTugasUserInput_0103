@@ -305,6 +305,34 @@ fun BiodataScreen() {
                                 fontSize = 16.sp
                             )
                         }
+                        // ==========================================
+                        // EFEK GRADASI BAYANGAN
+                        // ==========================================
+                        Column(
+                            modifier = Modifier.align(Alignment.BottomCenter)
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(12.dp)
+                                    .background(
+                                        brush = Brush.verticalGradient(
+                                            colors = listOf(
+                                                colorResource(id = R.color.shadow_start),
+                                                colorResource(id = R.color.shadow_end)
+                                            )
+                                        )
+                                    )
+                            )
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(40.dp)
+                                    .background(colorResource(id = R.color.card_background))
+                            )
+                        }
+                    }
+                }
                     }
                 }
             }
