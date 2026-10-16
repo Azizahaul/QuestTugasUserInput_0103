@@ -359,6 +359,31 @@ fun BiodataScreen() {
                         DatePicker(state = datePickerState)
                     }
                 }
+                // ==========================================
+                // POP-UP ALERT DIALOG (TAMPIL TEPAT 5 DETIK)
+                // ==========================================
+                if (showSuccessDialog) {
+                    AlertDialog(
+                        onDismissRequest = {
+                            dialogJob?.cancel()
+                            showSuccessDialog = false
+                        },
+                        title = { Text(text = "Sukses") },
+                        text = { Text(text = "Data berhasil diproses!") },
+                        confirmButton = {
+                            TextButton(onClick = {
+                                dialogJob?.cancel()
+                                showSuccessDialog = false
+                            }) {
+                                Text(text = "OK", color = colorResource(id = R.color.primary_green))
+                            }
+                        },
+                        shape = RoundedCornerShape(16.dp),
+                        containerColor = colorResource(id = R.color.card_background)
+                    )
+                }
+            }
+        }
                     }
                 }
             }
