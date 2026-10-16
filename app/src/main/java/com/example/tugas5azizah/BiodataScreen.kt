@@ -273,6 +273,38 @@ fun BiodataScreen() {
                                 }
                             }
                         }
+                        Spacer(modifier = Modifier.weight(1f))
+
+                        // TOMBOL PROCEED DENGAN POP-UP 5 DETIK
+                        Button(
+                            onClick = {
+                                if (isFormValid) {
+                                    dialogJob?.cancel()
+                                    showSuccessDialog = true
+                                    // Timer otomatis menutup pop-up tepat setelah 5 detik (5000 milidetik)
+                                    dialogJob = coroutineScope.launch {
+                                        delay(5000L)
+                                        showSuccessDialog = false
+                                    }
+                                } else {
+                                    Toast.makeText(context, "Harap lengkapi semua data!", Toast.LENGTH_SHORT).show()
+                                }
+                            },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = if (isFormValid) colorResource(id = R.color.primary_green) else colorResource(id = R.color.btn_disabled_gray)
+                            ),
+                            shape = RoundedCornerShape(16.dp),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(50.dp)
+                        ) {
+                            Text(
+                                text = stringResource(id = R.string.btn_proceed),
+                                color = Color.White,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 16.sp
+                            )
+                        }
                     }
                 }
             }
