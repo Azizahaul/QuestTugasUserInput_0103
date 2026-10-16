@@ -333,6 +333,32 @@ fun BiodataScreen() {
                         }
                     }
                 }
+                // ==========================================
+                // DIALOG KALENDER
+                // ==========================================
+                if (showDatePicker) {
+                    DatePickerDialog(
+                        onDismissRequest = { showDatePicker = false },
+                        confirmButton = {
+                            TextButton(onClick = {
+                                showDatePicker = false
+                                datePickerState.selectedDateMillis?.let { millis ->
+                                    val formatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                                    birthDate = formatter.format(Date(millis))
+                                }
+                            }) {
+                                Text(text = stringResource(id = R.string.btn_ok), color = colorResource(id = R.color.primary_green))
+                            }
+                        },
+                        dismissButton = {
+                            TextButton(onClick = { showDatePicker = false }) {
+                                Text(text = stringResource(id = R.string.btn_cancel), color = colorResource(id = R.color.text_gray))
+                            }
+                        }
+                    ) {
+                        DatePicker(state = datePickerState)
+                    }
+                }
                     }
                 }
             }
