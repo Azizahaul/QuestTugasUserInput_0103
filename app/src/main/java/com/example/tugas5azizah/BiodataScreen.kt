@@ -75,5 +75,14 @@ fun BiodataScreen() {
                     .fillMaxHeight(0.35f),
                 contentScale = ContentScale.Crop
             )
+            // 2. Box / Card yang Mengapung Di atas Scaffold
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight(0.78f)
+                    .align(Alignment.BottomCenter)
+                    .clip(RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp))
+                    .background(colorResource(id = R.color.card_background))
+            ) {
         }
 }
