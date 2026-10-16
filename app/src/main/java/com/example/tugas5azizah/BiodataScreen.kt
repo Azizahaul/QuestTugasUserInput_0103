@@ -84,5 +84,15 @@ fun BiodataScreen() {
                     .clip(RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp))
                     .background(colorResource(id = R.color.card_background))
             ) {
+                // ==========================================
+                // KONTEN FORMULIR
+                // ==========================================
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(start = 24.dp, end = 24.dp, top = 24.dp, bottom = 60.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+            }
         }
 }
