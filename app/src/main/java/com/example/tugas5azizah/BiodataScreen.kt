@@ -67,4 +67,13 @@ fun BiodataScreen() {
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
+            Image(
+                painter = painterResource(id = R.drawable.bg_green_totoro),
+                contentDescription = stringResource(id = R.string.desc_bg),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight(0.35f),
+                contentScale = ContentScale.Crop
+            )
+        }
 }
