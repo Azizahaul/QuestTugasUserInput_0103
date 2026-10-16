@@ -148,6 +148,41 @@ fun BiodataScreen() {
                             shape = RoundedCornerShape(12.dp),
                             modifier = Modifier.fillMaxWidth()
                         )
+                        Spacer(modifier = Modifier.height(12.dp))
+
+                        // TGL LAHIR & EXPERIENCE
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(12.dp)
+                        ) {
+                            // TGL LAHIR (KALENDER)
+                            Box(modifier = Modifier.weight(1f)) {
+                                OutlinedTextField(
+                                    value = birthDate,
+                                    onValueChange = { },
+                                    placeholder = { Text(stringResource(id = R.string.placeholder_birth_date)) },
+                                    readOnly = true,
+                                    trailingIcon = {
+                                        Icon(
+                                            imageVector = Icons.Default.DateRange,
+                                            contentDescription = stringResource(id = R.string.desc_calendar),
+                                            tint = colorResource(id = R.color.border_green)
+                                        )
+                                    },
+                                    colors = OutlinedTextFieldDefaults.colors(
+                                        focusedBorderColor = colorResource(id = R.color.border_green),
+                                        unfocusedBorderColor = colorResource(id = R.color.border_green).copy(alpha = 0.5f)
+                                    ),
+                                    shape = RoundedCornerShape(12.dp),
+                                    modifier = Modifier.fillMaxWidth()
+                                )
+                                Box(
+                                    modifier = Modifier
+                                        .matchParentSize()
+                                        .background(Color.Transparent)
+                                        .clickable { showDatePicker = true }
+                                )
+                            }
                     }
                 }
             }
