@@ -134,6 +134,20 @@ fun BiodataScreen() {
                             shape = RoundedCornerShape(12.dp),
                             modifier = Modifier.weight(1f)
                         )
+                        Spacer(modifier = Modifier.height(12.dp))
+
+                        // EMAIL
+                        OutlinedTextField(
+                            value = email,
+                            onValueChange = { email = it },
+                            placeholder = { Text(stringResource(id = R.string.placeholder_email)) },
+                            colors = OutlinedTextFieldDefaults.colors(
+                                focusedBorderColor = colorResource(id = R.color.border_green),
+                                unfocusedBorderColor = colorResource(id = R.color.border_green).copy(alpha = 0.5f)
+                            ),
+                            shape = RoundedCornerShape(12.dp),
+                            modifier = Modifier.fillMaxWidth()
+                        )
                     }
                 }
             }
