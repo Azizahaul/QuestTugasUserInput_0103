@@ -52,4 +52,11 @@ fun BiodataScreen() {
 
     // Variabel Job untuk mengelola waktu tunggu pop-up agar akurat 5 detik
     var dialogJob by remember { mutableStateOf<Job?>(null) }
+    // State untuk mengontrol munculnya pop-up
+    var showSuccessDialog by remember { mutableStateOf(false) }
+
+    // Logika untuk mengecek apakah form sudah diisi semua
+    val isFormValid = firstName.isNotBlank() && lastName.isNotBlank() && email.isNotBlank() &&
+            birthDate.isNotBlank() && experience.isNotBlank() &&
+            (isAndroidChecked || isUiUxChecked || isWebChecked)
 }
