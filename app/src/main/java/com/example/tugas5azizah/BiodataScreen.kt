@@ -50,15 +50,13 @@ fun BiodataScreen() {
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
 
-    // Variabel Job untuk mengelola waktu tunggu pop-up agar akurat 5 detik
     var dialogJob by remember { mutableStateOf<Job?>(null) }
-    // State untuk mengontrol munculnya pop-up
     var showSuccessDialog by remember { mutableStateOf(false) }
 
-    // Logika untuk mengecek apakah form sudah diisi semua
     val isFormValid = firstName.isNotBlank() && lastName.isNotBlank() && email.isNotBlank() &&
             birthDate.isNotBlank() && experience.isNotBlank() &&
             (isAndroidChecked || isUiUxChecked || isWebChecked)
+
     Scaffold(
         modifier = Modifier.fillMaxSize()
     ) { paddingValues ->
@@ -67,6 +65,7 @@ fun BiodataScreen() {
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
+            // 1. Gambar Latar Belakang
             Image(
                 painter = painterResource(id = R.drawable.bg_green_totoro),
                 contentDescription = stringResource(id = R.string.desc_bg),
@@ -75,6 +74,7 @@ fun BiodataScreen() {
                     .fillMaxHeight(0.35f),
                 contentScale = ContentScale.Crop
             )
+
             // 2. Box / Card yang Mengapung Di atas Scaffold
             Box(
                 modifier = Modifier
@@ -84,9 +84,7 @@ fun BiodataScreen() {
                     .clip(RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp))
                     .background(colorResource(id = R.color.card_background))
             ) {
-                // ==========================================
                 // KONTEN FORMULIR
-                // ==========================================
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
@@ -134,258 +132,255 @@ fun BiodataScreen() {
                             shape = RoundedCornerShape(12.dp),
                             modifier = Modifier.weight(1f)
                         )
-                        Spacer(modifier = Modifier.height(12.dp))
+                    }
 
-                        // EMAIL
-                        OutlinedTextField(
-                            value = email,
-                            onValueChange = { email = it },
-                            placeholder = { Text(stringResource(id = R.string.placeholder_email)) },
-                            colors = OutlinedTextFieldDefaults.colors(
-                                focusedBorderColor = colorResource(id = R.color.border_green),
-                                unfocusedBorderColor = colorResource(id = R.color.border_green).copy(alpha = 0.5f)
-                            ),
-                            shape = RoundedCornerShape(12.dp),
-                            modifier = Modifier.fillMaxWidth()
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    // EMAIL
+                    OutlinedTextField(
+                        value = email,
+                        onValueChange = { email = it },
+                        placeholder = { Text(stringResource(id = R.string.placeholder_email)) },
+                        colors = OutlinedTextFieldDefaults.colors(
+                            focusedBorderColor = colorResource(id = R.color.border_green),
+                            unfocusedBorderColor = colorResource(id = R.color.border_green).copy(alpha = 0.5f)
+                        ),
+                        shape = RoundedCornerShape(12.dp),
+                        modifier = Modifier.fillMaxWidth()
+                    )
+
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    // TGL LAHIR & EXPERIENCE
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        // TGL LAHIR (KALENDER)
+                        Box(modifier = Modifier.weight(1f)) {
+                            OutlinedTextField(
+                                value = birthDate,
+                                onValueChange = { },
+                                placeholder = { Text(stringResource(id = R.string.placeholder_birth_date)) },
+                                readOnly = true,
+                                trailingIcon = {
+                                    Icon(
+                                        imageVector = Icons.Default.DateRange,
+                                        contentDescription = stringResource(id = R.string.desc_calendar),
+                                        tint = colorResource(id = R.color.border_green)
+                                    )
+                                },
+                                colors = OutlinedTextFieldDefaults.colors(
+                                    focusedBorderColor = colorResource(id = R.color.border_green),
+                                    unfocusedBorderColor = colorResource(id = R.color.border_green).copy(alpha = 0.5f)
+                                ),
+                                shape = RoundedCornerShape(12.dp),
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                            Box(
+                                modifier = Modifier
+                                    .matchParentSize()
+                                    .background(Color.Transparent)
+                                    .clickable { showDatePicker = true }
+                            )
+                        }
+
+                        // EXPERIENCE (DROPDOWN)
+                        @Suppress("DEPRECATION")
+                        ExposedDropdownMenuBox(
+                            expanded = expandedDropdown,
+                            onExpandedChange = { expandedDropdown = !expandedDropdown },
+                            modifier = Modifier.weight(1f)
+                        ) {
+                            OutlinedTextField(
+                                value = experience,
+                                onValueChange = { },
+                                placeholder = { Text(stringResource(id = R.string.placeholder_experience)) },
+                                readOnly = true,
+                                trailingIcon = {
+                                    Icon(
+                                        imageVector = Icons.Default.ArrowDropDown,
+                                        contentDescription = null,
+                                        tint = colorResource(id = R.color.border_green)
+                                    )
+                                },
+                                colors = OutlinedTextFieldDefaults.colors(
+                                    focusedBorderColor = colorResource(id = R.color.border_green),
+                                    unfocusedBorderColor = colorResource(id = R.color.border_green).copy(alpha = 0.5f)
+                                ),
+                                shape = RoundedCornerShape(12.dp),
+                                modifier = Modifier
+                                    .menuAnchor()
+                                    .fillMaxWidth()
+                            )
+                            ExposedDropdownMenu(
+                                expanded = expandedDropdown,
+                                onDismissRequest = { expandedDropdown = false }
+                            ) {
+                                experienceOptions.forEach { option ->
+                                    DropdownMenuItem(
+                                        text = { Text(text = option) },
+                                        onClick = {
+                                            experience = option
+                                            expandedDropdown = false
+                                        }
+                                    )
+                                }
+                            }
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    // PILIHAN SKILL
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalAlignment = Alignment.Start
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.skill_title),
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 14.sp,
+                            modifier = Modifier.padding(bottom = 8.dp)
                         )
-                        Spacer(modifier = Modifier.height(12.dp))
 
-                        // TGL LAHIR & EXPERIENCE
                         Row(
                             modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(12.dp)
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
                         ) {
-                            // TGL LAHIR (KALENDER)
-                            Box(modifier = Modifier.weight(1f)) {
-                                OutlinedTextField(
-                                    value = birthDate,
-                                    onValueChange = { },
-                                    placeholder = { Text(stringResource(id = R.string.placeholder_birth_date)) },
-                                    readOnly = true,
-                                    trailingIcon = {
-                                        Icon(
-                                            imageVector = Icons.Default.DateRange,
-                                            contentDescription = stringResource(id = R.string.desc_calendar),
-                                            tint = colorResource(id = R.color.border_green)
-                                        )
-                                    },
-                                    colors = OutlinedTextFieldDefaults.colors(
-                                        focusedBorderColor = colorResource(id = R.color.border_green),
-                                        unfocusedBorderColor = colorResource(id = R.color.border_green).copy(alpha = 0.5f)
-                                    ),
-                                    shape = RoundedCornerShape(12.dp),
-                                    modifier = Modifier.fillMaxWidth()
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Checkbox(
+                                    checked = isAndroidChecked,
+                                    onCheckedChange = { isAndroidChecked = it },
+                                    colors = CheckboxDefaults.colors(checkedColor = colorResource(id = R.color.primary_green))
                                 )
-                                Box(
-                                    modifier = Modifier
-                                        .matchParentSize()
-                                        .background(Color.Transparent)
-                                        .clickable { showDatePicker = true }
+                                Text(text = stringResource(id = R.string.skill_android), fontSize = 12.sp)
+                            }
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Checkbox(
+                                    checked = isUiUxChecked,
+                                    onCheckedChange = { isUiUxChecked = it },
+                                    colors = CheckboxDefaults.colors(checkedColor = colorResource(id = R.color.primary_green))
                                 )
+                                Text(text = stringResource(id = R.string.skill_uiux), fontSize = 12.sp)
                             }
-                            // EXPERIENCE (DROPDOWN)
-                            @Suppress("DEPRECATION")
-                            ExposedDropdownMenuBox(
-                                expanded = expandedDropdown,
-                                onExpandedChange = { expandedDropdown = !expandedDropdown },
-                                modifier = Modifier.weight(1f)
-                            ) {
-                                OutlinedTextField(
-                                    value = experience,
-                                    onValueChange = { },
-                                    placeholder = { Text(stringResource(id = R.string.placeholder_experience)) },
-                                    readOnly = true,
-                                    trailingIcon = {
-                                        Icon(
-                                            imageVector = Icons.Default.ArrowDropDown,
-                                            contentDescription = null,
-                                            tint = colorResource(id = R.color.border_green)
-                                        )
-                                    },
-                                    colors = OutlinedTextFieldDefaults.colors(
-                                        focusedBorderColor = colorResource(id = R.color.border_green),
-                                        unfocusedBorderColor = colorResource(id = R.color.border_green).copy(alpha = 0.5f)
-                                    ),
-                                    shape = RoundedCornerShape(12.dp),
-                                    modifier = Modifier
-                                        .menuAnchor()
-                                        .fillMaxWidth()
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Checkbox(
+                                    checked = isWebChecked,
+                                    onCheckedChange = { isWebChecked = it },
+                                    colors = CheckboxDefaults.colors(checkedColor = colorResource(id = R.color.primary_green))
                                 )
-                                ExposedDropdownMenu(
-                                    expanded = expandedDropdown,
-                                    onDismissRequest = { expandedDropdown = false }
-                                ) {
-                                    experienceOptions.forEach { option ->
-                                        DropdownMenuItem(
-                                            text = { Text(text = option) },
-                                            onClick = {
-                                                experience = option
-                                                expandedDropdown = false
-                                            }
-
-                                        )
-                                    }
-                                }
+                                Text(text = stringResource(id = R.string.skill_web), fontSize = 12.sp)
                             }
-                        }
-                        Spacer(modifier = Modifier.height(16.dp))
-
-                        // PILIHAN SKILL
-                        Column(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalAlignment = Alignment.Start
-                        ) {
-                            Text(
-                                text = stringResource(id = R.string.skill_title),
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 14.sp,
-                                modifier = Modifier.padding(bottom = 8.dp)
-                            )
-
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Checkbox(
-                                        checked = isAndroidChecked,
-                                        onCheckedChange = { isAndroidChecked = it },
-                                        colors = CheckboxDefaults.colors(checkedColor = colorResource(id = R.color.primary_green))
-                                    )
-                                    Text(text = stringResource(id = R.string.skill_android), fontSize = 12.sp)
-                                }
-                                Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Checkbox(
-                                        checked = isUiUxChecked,
-                                        onCheckedChange = { isUiUxChecked = it },
-                                        colors = CheckboxDefaults.colors(checkedColor = colorResource(id = R.color.primary_green))
-                                    )
-                                    Text(text = stringResource(id = R.string.skill_uiux), fontSize = 12.sp)
-                                }
-                                Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Checkbox(
-                                        checked = isWebChecked,
-                                        onCheckedChange = { isWebChecked = it },
-                                        colors = CheckboxDefaults.colors(checkedColor = colorResource(id = R.color.primary_green))
-                                    )
-                                    Text(text = stringResource(id = R.string.skill_web), fontSize = 12.sp)
-                                }
-                            }
-                        }
-                        Spacer(modifier = Modifier.weight(1f))
-
-                        // TOMBOL PROCEED DENGAN POP-UP 5 DETIK
-                        Button(
-                            onClick = {
-                                if (isFormValid) {
-                                    dialogJob?.cancel()
-                                    showSuccessDialog = true
-                                    // Timer otomatis menutup pop-up tepat setelah 5 detik (5000 milidetik)
-                                    dialogJob = coroutineScope.launch {
-                                        delay(5000L)
-                                        showSuccessDialog = false
-                                    }
-                                } else {
-                                    Toast.makeText(context, "Harap lengkapi semua data!", Toast.LENGTH_SHORT).show()
-                                }
-                            },
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = if (isFormValid) colorResource(id = R.color.primary_green) else colorResource(id = R.color.btn_disabled_gray)
-                            ),
-                            shape = RoundedCornerShape(16.dp),
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(50.dp)
-                        ) {
-                            Text(
-                                text = stringResource(id = R.string.btn_proceed),
-                                color = Color.White,
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 16.sp
-                            )
-                        }
-                        // ==========================================
-                        // EFEK GRADASI BAYANGAN
-                        // ==========================================
-                        Column(
-                            modifier = Modifier.align(Alignment.BottomCenter)
-                        ) {
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(12.dp)
-                                    .background(
-                                        brush = Brush.verticalGradient(
-                                            colors = listOf(
-                                                colorResource(id = R.color.shadow_start),
-                                                colorResource(id = R.color.shadow_end)
-                                            )
-                                        )
-                                    )
-                            )
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(40.dp)
-                                    .background(colorResource(id = R.color.card_background))
-                            )
                         }
                     }
-                }
-                // ==========================================
-                // DIALOG KALENDER
-                // ==========================================
-                if (showDatePicker) {
-                    DatePickerDialog(
-                        onDismissRequest = { showDatePicker = false },
-                        confirmButton = {
-                            TextButton(onClick = {
-                                showDatePicker = false
-                                datePickerState.selectedDateMillis?.let { millis ->
-                                    val formatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-                                    birthDate = formatter.format(Date(millis))
-                                }
-                            }) {
-                                Text(text = stringResource(id = R.string.btn_ok), color = colorResource(id = R.color.primary_green))
-                            }
-                        },
-                        dismissButton = {
-                            TextButton(onClick = { showDatePicker = false }) {
-                                Text(text = stringResource(id = R.string.btn_cancel), color = colorResource(id = R.color.text_gray))
-                            }
-                        }
-                    ) {
-                        DatePicker(state = datePickerState)
-                    }
-                }
-                // ==========================================
-                // POP-UP ALERT DIALOG (TAMPIL TEPAT 5 DETIK)
-                // ==========================================
-                if (showSuccessDialog) {
-                    AlertDialog(
-                        onDismissRequest = {
-                            dialogJob?.cancel()
-                            showSuccessDialog = false
-                        },
-                        title = { Text(text = "Sukses") },
-                        text = { Text(text = "Data berhasil diproses!") },
-                        confirmButton = {
-                            TextButton(onClick = {
+
+                    Spacer(modifier = Modifier.weight(1f))
+
+                    // TOMBOL PROCEED DENGAN POP-UP 5 DETIK
+                    Button(
+                        onClick = {
+                            if (isFormValid) {
                                 dialogJob?.cancel()
-                                showSuccessDialog = false
-                            }) {
-                                Text(text = "OK", color = colorResource(id = R.color.primary_green))
+                                showSuccessDialog = true
+                                dialogJob = coroutineScope.launch {
+                                    delay(5000L)
+                                    showSuccessDialog = false
+                                }
+                            } else {
+                                Toast.makeText(context, "Harap lengkapi semua data!", Toast.LENGTH_SHORT).show()
                             }
                         },
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = if (isFormValid) colorResource(id = R.color.primary_green) else colorResource(id = R.color.btn_disabled_gray)
+                        ),
                         shape = RoundedCornerShape(16.dp),
-                        containerColor = colorResource(id = R.color.card_background)
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(50.dp)
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.btn_proceed),
+                            color = Color.White,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 16.sp
+                        )
+                    }
+                }
+
+                // EFEK GRADASI BAYANGAN
+                Column(
+                    modifier = Modifier.align(Alignment.BottomCenter)
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(12.dp)
+                            .background(
+                                brush = Brush.verticalGradient(
+                                    colors = listOf(
+                                        colorResource(id = R.color.shadow_start),
+                                        colorResource(id = R.color.shadow_end)
+                                    )
+                                )
+                            )
+                    )
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(40.dp)
+                            .background(colorResource(id = R.color.card_background))
                     )
                 }
             }
         }
+
+        // DIALOG KALENDER
+        if (showDatePicker) {
+            DatePickerDialog(
+                onDismissRequest = { showDatePicker = false },
+                confirmButton = {
+                    TextButton(onClick = {
+                        showDatePicker = false
+                        datePickerState.selectedDateMillis?.let { millis ->
+                            val formatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                            birthDate = formatter.format(Date(millis))
+                        }
+                    }) {
+                        Text(text = stringResource(id = R.string.btn_ok), color = colorResource(id = R.color.primary_green))
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = { showDatePicker = false }) {
+                        Text(text = stringResource(id = R.string.btn_cancel), color = colorResource(id = R.color.text_gray))
                     }
                 }
+            ) {
+                DatePicker(state = datePickerState)
             }
         }
+
+        // POP-UP ALERT DIALOG
+        if (showSuccessDialog) {
+            AlertDialog(
+                onDismissRequest = {
+                    dialogJob?.cancel()
+                    showSuccessDialog = false
+                },
+                title = { Text(text = "Sukses") },
+                text = { Text(text = "Data berhasil diproses!") },
+                confirmButton = {
+                    TextButton(onClick = {
+                        dialogJob?.cancel()
+                        showSuccessDialog = false
+                    }) {
+                        Text(text = "OK", color = colorResource(id = R.color.primary_green))
+                    }
+                },
+                shape = RoundedCornerShape(16.dp),
+                containerColor = colorResource(id = R.color.card_background)
+            )
+        }
+    }
 }
