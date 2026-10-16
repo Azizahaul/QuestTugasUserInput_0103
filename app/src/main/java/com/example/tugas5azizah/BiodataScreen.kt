@@ -45,4 +45,6 @@ fun BiodataScreen() {
     var isWebChecked by remember { mutableStateOf(false) }
     var showDatePicker by remember { mutableStateOf(false) }
     val datePickerState = rememberDatePickerState()
+    var expandedDropdown by remember { mutableStateOf(false) }
+    val experienceOptions = stringArrayResource(id = R.array.experience_options)
 }
