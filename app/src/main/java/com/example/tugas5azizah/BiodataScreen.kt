@@ -106,6 +106,35 @@ fun BiodataScreen() {
                         color = colorResource(id = R.color.text_gray)
                     )
                     Spacer(modifier = Modifier.height(24.dp))
+
+                    // NAMA DEPAN & NAMA BELAKANG
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        OutlinedTextField(
+                            value = firstName,
+                            onValueChange = { firstName = it },
+                            placeholder = { Text(stringResource(id = R.string.placeholder_first_name)) },
+                            colors = OutlinedTextFieldDefaults.colors(
+                                focusedBorderColor = colorResource(id = R.color.border_green),
+                                unfocusedBorderColor = colorResource(id = R.color.border_green).copy(alpha = 0.5f)
+                            ),
+                            shape = RoundedCornerShape(12.dp),
+                            modifier = Modifier.weight(1f)
+                        )
+                        OutlinedTextField(
+                            value = lastName,
+                            onValueChange = { lastName = it },
+                            placeholder = { Text(stringResource(id = R.string.placeholder_last_name)) },
+                            colors = OutlinedTextFieldDefaults.colors(
+                                focusedBorderColor = colorResource(id = R.color.border_green),
+                                unfocusedBorderColor = colorResource(id = R.color.border_green).copy(alpha = 0.5f)
+                            ),
+                            shape = RoundedCornerShape(12.dp),
+                            modifier = Modifier.weight(1f)
+                        )
+                    }
                 }
             }
         }
