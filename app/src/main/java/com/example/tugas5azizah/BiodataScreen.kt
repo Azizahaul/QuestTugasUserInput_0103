@@ -222,8 +222,54 @@ fun BiodataScreen() {
                                                 experience = option
                                                 expandedDropdown = false
                                             }
+
                                         )
                                     }
+                                }
+                            }
+                        }
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        // PILIHAN SKILL
+                        Column(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalAlignment = Alignment.Start
+                        ) {
+                            Text(
+                                text = stringResource(id = R.string.skill_title),
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 14.sp,
+                                modifier = Modifier.padding(bottom = 8.dp)
+                            )
+
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Checkbox(
+                                        checked = isAndroidChecked,
+                                        onCheckedChange = { isAndroidChecked = it },
+                                        colors = CheckboxDefaults.colors(checkedColor = colorResource(id = R.color.primary_green))
+                                    )
+                                    Text(text = stringResource(id = R.string.skill_android), fontSize = 12.sp)
+                                }
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Checkbox(
+                                        checked = isUiUxChecked,
+                                        onCheckedChange = { isUiUxChecked = it },
+                                        colors = CheckboxDefaults.colors(checkedColor = colorResource(id = R.color.primary_green))
+                                    )
+                                    Text(text = stringResource(id = R.string.skill_uiux), fontSize = 12.sp)
+                                }
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Checkbox(
+                                        checked = isWebChecked,
+                                        onCheckedChange = { isWebChecked = it },
+                                        colors = CheckboxDefaults.colors(checkedColor = colorResource(id = R.color.primary_green))
+                                    )
+                                    Text(text = stringResource(id = R.string.skill_web), fontSize = 12.sp)
                                 }
                             }
                         }
