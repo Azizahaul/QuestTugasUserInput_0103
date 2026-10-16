@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">Form Biodata App</string>
+    <string name="form_title">Form Biodata</string>
+    <string name="form_subtitle">Silahkan isi biodata Anda dibawah ini !!!</string>
+    <string name="placeholder_first_name">Nama Depan</string>
+    <string name="placeholder_last_name">Nama Belakang</string>
+    <string name="placeholder_email">Email</string>
+    <string name="placeholder_birth_date">Tgl Lahir</string>
+    <string name="placeholder_experience">Experience</string>
+    <string name="skill_title">Pilih Skill Anda :</string>
+    <string name="skill_android">Android</string>
+    <string name="skill_uiux">UI/UX</string>
+    <string name="skill_web">Web</string>
+    <string name="btn_proceed">Proceed</string>
+    <string name="desc_bg">Latar Belakang Green Bus</string>
+    <string name="desc_calendar">Ikon Kalender</string>
+
+    <!-- TAMBAHAN UNTUK KALENDER DAN DROPDOWN (TIDAK HARDCODE) -->
+    <string name="btn_ok">OK</string>
+    <string name="btn_cancel">Batal</string>
+    <string-array name="experience_options">
+        <item>Belum ada pengalaman</item>
+        <item>1 - 2 Tahun</item>
+        <item>3 - 5 Tahun</item>
+        <item>Lebih dari 5 Tahun</item>
+    </string-array>
+</resources>

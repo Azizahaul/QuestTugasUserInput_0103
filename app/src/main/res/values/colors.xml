@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary_green">#2E7D32</color>
+    <color name="border_green">#1B5E20</color>
+    <color name="text_gray">#757575</color>
+    <color name="btn_disabled_gray">#D0D0D0</color>
+    <color name="white">#FFFFFF</color>
+    <color name="card_background">#FFFFFF</color>
+
+    <color name="shadow_start">#33000000</color> <!-- Abu-abu transparan 20% -->
+    <color name="shadow_end">#00000000</color>
+</resources>
