@@ -59,4 +59,12 @@ fun BiodataScreen() {
     val isFormValid = firstName.isNotBlank() && lastName.isNotBlank() && email.isNotBlank() &&
             birthDate.isNotBlank() && experience.isNotBlank() &&
             (isAndroidChecked || isUiUxChecked || isWebChecked)
+    Scaffold(
+        modifier = Modifier.fillMaxSize()
+    ) { paddingValues ->
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+        ) {
 }
